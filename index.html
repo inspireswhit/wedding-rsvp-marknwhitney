@@ -371,10 +371,10 @@
       <p class="err-msg">Please enter your name.</p>
     </div>
 
-    <div class="field">
-      <label class="field-label" for="f-email">Email Address</label>
+    <div class="field" id="wrap-email">
+      <label class="field-label" for="f-email">Email Address <span class="req">*</span></label>
       <input type="email" id="f-email" placeholder="your@email.com" autocomplete="email" />
-      <p class="field-note">Optional — only used if we need to follow up with you.</p>
+      <p class="err-msg">Please enter a valid email address.</p>
     </div>
 
     <div class="field" id="wrap-ref">
@@ -396,10 +396,10 @@
       <p class="err-msg">Please enter a group size of at least 1.</p>
     </div>
 
-    <div class="field">
-      <label class="field-label" for="f-names">Names of everyone in your group</label>
+    <div class="field" id="wrap-names">
+      <label class="field-label" for="f-names">Names of everyone in your group <span class="req">*</span></label>
       <textarea id="f-names" placeholder="List each person's name, one per line…"></textarea>
-      <p class="field-note">Optional but so helpful for seating and planning.</p>
+      <p class="err-msg">Please list the names of everyone in your group.</p>
     </div>
   </div>
 
@@ -514,6 +514,11 @@ function validate() {
   setError('wrap-name', 'f-name', !name);
   if (!name) ok = false;
 
+  const email = document.getElementById('f-email').value.trim();
+  const emailValid = email && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+  setError('wrap-email', 'f-email', !emailValid);
+  if (!emailValid) ok = false;
+
   const ref = document.getElementById('f-ref').value.trim();
   setError('wrap-ref', 'f-ref', !ref);
   if (!ref) ok = false;
@@ -521,6 +526,10 @@ function validate() {
   const gs = parseInt(document.getElementById('f-gs').value);
   setError('wrap-gs', 'f-gs', !gs || gs < 1);
   if (!gs || gs < 1) ok = false;
+
+  const groupNames = document.getElementById('f-names').value.trim();
+  setError('wrap-names', 'f-names', !groupNames);
+  if (!groupNames) ok = false;
 
   const att = document.querySelector('input[name="attendance"]:checked');
   const wrapAtt = document.getElementById('wrap-att');
